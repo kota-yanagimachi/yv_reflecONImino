@@ -16,11 +16,10 @@ type CanvasProp = {
     height: number,
     puzzle_data: PuzzleData,
     setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>,
-    setSolved: React.Dispatch<React.SetStateAction<boolean>>,
     timer_enabled: boolean
 };
 
-const Canvas = ({ width, height, puzzle_data, setPuzzleData, setSolved, timer_enabled }: CanvasProp) => {
+const Canvas = ({ width, height, puzzle_data, setPuzzleData, timer_enabled }: CanvasProp) => {
     const [dragging_mino_index, setDraggingMinoIndex] = useState<number | undefined>(undefined);
 
     // ミノ数

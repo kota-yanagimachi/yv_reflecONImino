@@ -410,7 +410,6 @@ const ReflecMino = (): JSX.Element => {
                                             height={size.y}
                                             puzzle_data={puzzle_data}
                                             setPuzzleData={setPuzzleData}
-                                            setSolved={setSolved}
                                             timer_enabled={timer_enabled}
                                         />
                                     </Box>
