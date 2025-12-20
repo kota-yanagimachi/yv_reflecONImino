@@ -4,7 +4,7 @@ import { normal_difficulty_setting, hell_difficulty_setting, empty_board, mino_p
 import { MinoData, PuzzleData, Mode } from "./const";
 import { simulate_laser } from "./simulate_laser";
 
-export function generate(mode: Mode,seed: number): PuzzleData {
+export function generate(mode: Mode, seed: number): PuzzleData {
     const minoCount = mode === "HellMode" ? hell_difficulty_setting.minoCount : normal_difficulty_setting.minoCount;
     const mirrorCount = mode === "HellMode" ? hell_difficulty_setting.mirrorCount : normal_difficulty_setting.mirrorCount;
 
@@ -22,7 +22,7 @@ export function generate(mode: Mode,seed: number): PuzzleData {
 
     // 青のレーザーは０〜総枚数までのミラーを使う
     // 原作はnext_int(3, 7)だった
-    const mirror_random_count = rnd.next_int(mirrorCount / 2, mirrorCount + 1);
+    const mirror_random_count = rnd.next_int(Math.floor(mirrorCount / 2), mirrorCount + 1);
     const laser = [
         Object.assign({ mirror: mirror_random_count }, get_s(flame.indexOf("S"))),
         Object.assign({ mirror: mirrorCount - mirror_random_count }, get_s(flame.lastIndexOf("S"))),
