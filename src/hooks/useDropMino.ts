@@ -4,11 +4,11 @@ import { replace_2d_array } from "../utils/function";
 import { PuzzleData } from "../puzzle/const";
 import { simulate_laser } from "../puzzle/simulate_laser";
 
-const useDropMino = (index: number, setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>, setDraggingMinoIndex: React.Dispatch<React.SetStateAction<number | undefined>>, update_pos: { x: number, y: number } | undefined, update_scale: { x: number, y: number } | undefined) => {
+const useDropMino = (index: number, setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>, draggingMinoIndex: number | undefined, update_pos: { x: number, y: number } | undefined, update_scale: { x: number, y: number } | undefined) => {
     return useCallback(
         (e: KonvaEventObject<DragEvent>) => {
             e.cancelBubble = true;
-            setDraggingMinoIndex(undefined);
+            draggingMinoIndex = undefined;
             setPuzzleData((prev_data) => {
                 const mino_pos = {
                     x: Math.round((e.target.x() + 25) / 50),
@@ -74,7 +74,7 @@ const useDropMino = (index: number, setPuzzleData: React.Dispatch<React.SetState
             if (update_scale) {
                 e.target.scale(update_scale);
             }
-        }, [index, setPuzzleData, setDraggingMinoIndex, update_pos, update_scale]
+        }, [index, setPuzzleData, draggingMinoIndex, update_pos, update_scale]
     );
 }
 

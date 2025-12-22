@@ -14,13 +14,12 @@ type InventoryMinoProp = {
     isLandscape: boolean,
     puzzle_data: PuzzleData,
     setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>,
-    dragging_mino_index: number | undefined,
-    setDraggingMinoIndex: React.Dispatch<React.SetStateAction<number | undefined>>
+    draggingMinoIndex: number | undefined
 };
 
-const InventoryMino = ({ index, inventoryFrame, slotFrame, isLandscape, puzzle_data, setPuzzleData, setDraggingMinoIndex }: InventoryMinoProp): JSX.Element => {
+const InventoryMino = ({ index, inventoryFrame, slotFrame, isLandscape, puzzle_data, setPuzzleData, draggingMinoIndex }: InventoryMinoProp): JSX.Element => {
     const picked_mino = puzzle_data[1][index];
-    const onDragStart = usePickupMino(index, setPuzzleData, setDraggingMinoIndex);
+    const onDragStart = usePickupMino(index, setPuzzleData, draggingMinoIndex);
     const baseScale = isLandscape ? 0.8 : 0.45;
     const scaleModifier = Math.min(4 / puzzle_data[1].length, 1);
     const scale = isLandscape ? {x: baseScale * scaleModifier, y: baseScale * scaleModifier} : {x: baseScale * scaleModifier, y: baseScale * scaleModifier};
@@ -35,7 +34,7 @@ const InventoryMino = ({ index, inventoryFrame, slotFrame, isLandscape, puzzle_d
             e.target.scale({ x: 1, y: 1 });
         }, []
     );
-    const onDragEnd = useDropMino(index, setPuzzleData, setDraggingMinoIndex, centered_pos, scale);
+    const onDragEnd = useDropMino(index, setPuzzleData, draggingMinoIndex, centered_pos, scale);
 
     return (
         <Group

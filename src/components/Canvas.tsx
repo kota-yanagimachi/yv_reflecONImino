@@ -16,12 +16,11 @@ type CanvasProp = {
     height: number,
     puzzle_data: PuzzleData,
     setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>,
+    draggingMinoIndex: number | undefined,
     timer_enabled: boolean
 };
 
-const Canvas = ({ width, height, puzzle_data, setPuzzleData, timer_enabled }: CanvasProp) => {
-    const [dragging_mino_index, setDraggingMinoIndex] = useState<number | undefined>(undefined);
-
+const Canvas = ({ width, height, puzzle_data, setPuzzleData, draggingMinoIndex, timer_enabled }: CanvasProp) => {
     // ミノ数
     const minoCount = puzzle_data[1].length;
     
@@ -77,7 +76,7 @@ const Canvas = ({ width, height, puzzle_data, setPuzzleData, timer_enabled }: Ca
                             key={`b${i}`}
                             index={i}
                             puzzle_data={puzzle_data}
-                            dragging_mino_index={dragging_mino_index}
+                            draggingMinoIndex={draggingMinoIndex}
                         />
                     ))}
 
@@ -90,8 +89,7 @@ const Canvas = ({ width, height, puzzle_data, setPuzzleData, timer_enabled }: Ca
                             index={i}
                             puzzle_data={puzzle_data}
                             setPuzzleData={setPuzzleData}
-                            dragging_mino_index={dragging_mino_index}
-                            setDraggingMinoIndex={setDraggingMinoIndex}
+                            draggingMinoIndex={draggingMinoIndex}
                         />
                     ))}
                 </Group>
@@ -105,8 +103,7 @@ const Canvas = ({ width, height, puzzle_data, setPuzzleData, timer_enabled }: Ca
                             isLandscape={isLandscape}
                             puzzle_data={puzzle_data}
                             setPuzzleData={setPuzzleData}
-                            dragging_mino_index={dragging_mino_index}
-                            setDraggingMinoIndex={setDraggingMinoIndex}
+                            draggingMinoIndex={draggingMinoIndex}
                         />
                     ))}
                 </Group>
