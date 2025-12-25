@@ -33,7 +33,7 @@ const OverlayMino = ({ index, puzzle_data, setPuzzleData, dragging_mino_index, s
             enabled={dragging_mino_index === index}
         >
             <Group
-                draggable
+                draggable={dragging_mino_index === undefined || dragging_mino_index === index}
                 onDragStart={onDragStart}
                 onDragMove={onDragMove}
                 onDragEnd={onDragEnd}

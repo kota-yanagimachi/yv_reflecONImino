@@ -40,7 +40,7 @@ const BoardMino = ({ index, puzzle_data, dragging_mino_index }: BoardMinoProp): 
     }
     return (
         <Group
-            draggable
+            draggable={dragging_mino_index === undefined || dragging_mino_index === index}
             x={pos?.x}
             y={pos?.y}
             offset={{ x: 25, y: 25 }}
