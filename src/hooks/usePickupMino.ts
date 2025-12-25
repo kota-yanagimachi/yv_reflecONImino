@@ -4,11 +4,11 @@ import { replace_2d_array } from "../utils/function";
 import { PuzzleData } from "../puzzle/const";
 import { simulate_laser } from "../puzzle/simulate_laser";
 
-const usePickupMino = (index: number, setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>, draggingMinoIndex: number | undefined) => {
+const usePickupMino = (index: number, setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>, setDraggingMinoIndex: React.Dispatch<React.SetStateAction<number | undefined>>) => {
     return useCallback(
         (e: KonvaEventObject<DragEvent>) => {
             e.cancelBubble = true;
-            draggingMinoIndex = index;
+            setDraggingMinoIndex(index);
             setPuzzleData((prev_data) => {
                 const picked_mino = prev_data[1][index];
                 const new_board = (() => {
@@ -35,7 +35,7 @@ const usePickupMino = (index: number, setPuzzleData: React.Dispatch<React.SetSta
                     ]
                 ]
             });
-        }, [index, setPuzzleData, draggingMinoIndex]
+        }, [index, setPuzzleData, setDraggingMinoIndex]
     );
 }
 

@@ -36,7 +36,7 @@ const initial_date = (() => {
 const custom_puzzle_data = decode(query_params.custom);
 
 const ReflecMino = (): JSX.Element => {
-    const draggingMinoIndexRef = useRef<number | undefined>(undefined);
+
     const [date, setDate] = useState<Date>(initial_date);
     const HandleDateChange = useCallback(
         (value: Date | null) => {
@@ -187,8 +187,7 @@ const ReflecMino = (): JSX.Element => {
         );
         setSolved(
             !non_activated_cells.flat().includes("￭") &&
-            puzzle_data[1].every(e => e.pos !== undefined) &&
-            draggingMinoIndexRef.current === undefined
+            puzzle_data[1].every(e => e.pos !== undefined)
         );
     }, [puzzle_data])
 
@@ -411,7 +410,6 @@ const ReflecMino = (): JSX.Element => {
                                             height={size.y}
                                             puzzle_data={puzzle_data}
                                             setPuzzleData={setPuzzleData}
-                                            draggingMinoIndex={draggingMinoIndexRef.current}
                                             timer_enabled={timer_enabled}
                                         />
                                     </Box>

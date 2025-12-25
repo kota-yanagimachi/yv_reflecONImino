@@ -11,12 +11,13 @@ type OverlayMinoProp = {
     index: number,
     puzzle_data: PuzzleData,
     setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>,
-    draggingMinoIndex: number | undefined
+    dragging_mino_index: number | undefined,
+    setDraggingMinoIndex: React.Dispatch<React.SetStateAction<number | undefined>>
 };
 
-const OverlayMino = ({ index, puzzle_data, setPuzzleData, draggingMinoIndex }: OverlayMinoProp): JSX.Element => {
+const OverlayMino = ({ index, puzzle_data, setPuzzleData, dragging_mino_index, setDraggingMinoIndex }: OverlayMinoProp): JSX.Element => {
     const picked_mino = puzzle_data[1][index];
-    const onDragStart = usePickupMino(index, setPuzzleData, draggingMinoIndex);
+    const onDragStart = usePickupMino(index, setPuzzleData, setDraggingMinoIndex);
     const pos = picked_mino.pos
         ? {
             x: (picked_mino.pos.x - 1) * 50 + 25,
@@ -24,12 +25,12 @@ const OverlayMino = ({ index, puzzle_data, setPuzzleData, draggingMinoIndex }: O
         }
         : undefined;
     const onDragMove = useCallback((e: KonvaEventObject<DragEvent>) => e.cancelBubble = true, []);
-    const onDragEnd = useDropMino(index, setPuzzleData, draggingMinoIndex, pos, undefined);
+    const onDragEnd = useDropMino(index, setPuzzleData, setDraggingMinoIndex, pos, undefined);
 
     return (
         <Portal
             selector={".board_picked"}
-            enabled={draggingMinoIndex === index}
+            enabled={dragging_mino_index === index}
         >
             <Group
                 draggable
@@ -48,11 +49,11 @@ const OverlayMino = ({ index, puzzle_data, setPuzzleData, draggingMinoIndex }: O
                     stroke={"#414958"}
                     strokeWidth={4}
                     lineJoin={"round"}
-                    opacity={draggingMinoIndex === index ? 1 : 0}
+                    opacity={dragging_mino_index === index ? 1 : 0}
                 />
-                <Cell data={picked_mino.cell[0]} color={undefined} rect_visible={draggingMinoIndex === index} />
-                <Cell data={picked_mino.cell[1]} color={undefined} rect_visible={draggingMinoIndex === index} />
-                <Cell data={picked_mino.cell[2]} color={undefined} rect_visible={draggingMinoIndex === index} />
+                <Cell data={picked_mino.cell[0]} color={undefined} rect_visible={dragging_mino_index === index} />
+                <Cell data={picked_mino.cell[1]} color={undefined} rect_visible={dragging_mino_index === index} />
+                <Cell data={picked_mino.cell[2]} color={undefined} rect_visible={dragging_mino_index === index} />
             </Group >
         </Portal>
     );

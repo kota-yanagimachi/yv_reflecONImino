@@ -6,10 +6,10 @@ import Cell from './Cell';
 type BoardMinoProp = {
     index: number,
     puzzle_data: PuzzleData,
-    draggingMinoIndex: number | undefined
+    dragging_mino_index: number | undefined
 };
 
-const BoardMino = ({ index, puzzle_data, draggingMinoIndex }: BoardMinoProp): JSX.Element => {
+const BoardMino = ({ index, puzzle_data, dragging_mino_index }: BoardMinoProp): JSX.Element => {
     const mino = puzzle_data[1][index];
     const pos = mino.pos
         ? {
@@ -44,7 +44,7 @@ const BoardMino = ({ index, puzzle_data, draggingMinoIndex }: BoardMinoProp): JS
             x={pos?.x}
             y={pos?.y}
             offset={{ x: 25, y: 25 }}
-            visible={draggingMinoIndex !== index && mino.pos !== undefined}
+            visible={dragging_mino_index !== index && mino.pos !== undefined}
         >
             <Line
                 points={mino.vertex}

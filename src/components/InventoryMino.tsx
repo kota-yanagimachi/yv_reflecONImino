@@ -1,50 +1,65 @@
 import React, { useCallback } from 'react';
-import { MinoData, PuzzleData } from "../puzzle/const";
+import { PuzzleData } from "../puzzle/const";
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Group, Line } from 'react-konva';
 import Cell from './Cell';
 import usePickupMino from '../hooks/usePickupMino';
 import useDropMino from '../hooks/useDropMino';
 import { Frame } from './common';
-import useMoveMino from '../hooks/useMoveMino';
 
 type InventoryMinoProp = {
     index: number,
-    mino: MinoData,
-    homePos: {x: number, y: number},
-    scale: {x: number, y: number},
+    inventoryFrame: Frame,
+    slotFrame: Frame,
+    isLandscape: boolean,
+    puzzle_data: PuzzleData,
     setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>,
-    draggingMinoIndex: number | undefined
+    dragging_mino_index: number | undefined,
+    setDraggingMinoIndex: React.Dispatch<React.SetStateAction<number | undefined>>
 };
 
-// const InventoryMino = ({ index, homePos, scale, puzzle_data, setPuzzleData, draggingMinoIndex }: InventoryMinoProp): JSX.Element => {
-const InventoryMino = ({ index, mino, homePos, scale, setPuzzleData, draggingMinoIndex }: InventoryMinoProp): JSX.Element => {
-    const onDragStart = usePickupMino(index, setPuzzleData, draggingMinoIndex)
-    const onDragMove = useMoveMino();
-    const onDragEnd = useDropMino(index, setPuzzleData, draggingMinoIndex, homePos, scale);
+const InventoryMino = ({ index, inventoryFrame, slotFrame, isLandscape, puzzle_data, setPuzzleData, setDraggingMinoIndex }: InventoryMinoProp): JSX.Element => {
+    const picked_mino = puzzle_data[1][index];
+    const onDragStart = usePickupMino(index, setPuzzleData, setDraggingMinoIndex);
+    const baseScale = isLandscape ? 0.8 : 0.45;
+    const scaleModifier = Math.min(4 / puzzle_data[1].length, 1);
+    const scale = isLandscape ? {x: baseScale * scaleModifier, y: baseScale * scaleModifier} : {x: baseScale * scaleModifier, y: baseScale * scaleModifier};
+    const centered_pos = {
+        // (スロットの左上絶対座標) - (ミノ座標とミノ中心の差分) + (スロット座標とスロット中心との差分)
+        x: (inventoryFrame.x + slotFrame.x) - ((picked_mino.cell[0].x + picked_mino.cell[1].x + picked_mino.cell[2].x) * 25 * scale.x) + (slotFrame.width / 2),
+        y: (inventoryFrame.y + slotFrame.y) - ((picked_mino.cell[0].y + picked_mino.cell[1].y + picked_mino.cell[2].y) * 25 * scale.y) + (slotFrame.height / 2)
+    };
+    const onDragMove = useCallback(
+        (e: KonvaEventObject<DragEvent>) => {
+            e.cancelBubble = true;
+            e.target.scale({ x: 1, y: 1 });
+        }, []
+    );
+    const onDragEnd = useDropMino(index, setPuzzleData, setDraggingMinoIndex, centered_pos, scale);
+
     return (
         <Group
             draggable
             onDragStart={onDragStart}
             onDragMove={onDragMove}
             onDragEnd={onDragEnd}
-            x={homePos.x}
-            y={homePos.y}
+            x={centered_pos.x}
+            y={centered_pos.y}
             offset={{ x: 25, y: 25 }}
             scale={scale}
-            visible={mino.pos === undefined}
+            visible={picked_mino.pos === undefined}
         >
             <Line
-                points={mino.vertex}
+                points={picked_mino.vertex}
                 fill={"#c2c8cc"}
                 closed={true}
                 stroke={"#414958"}
                 strokeWidth={4}
                 lineJoin={"round"}
             />
-            <Cell data={mino.cell[0]} color={undefined} rect_visible={true} />
-            <Cell data={mino.cell[1]} color={undefined} rect_visible={true} />
-            <Cell data={mino.cell[2]} color={undefined} rect_visible={true} />
+            <Cell data={picked_mino.cell[0]} color={undefined} rect_visible={true} />
+            <Cell data={picked_mino.cell[1]} color={undefined} rect_visible={true} />
+            <Cell data={picked_mino.cell[2]} color={undefined} rect_visible={true} />
         </Group>
     );
 }
