@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stage, Layer, Group } from 'react-konva';
 import { PuzzleData } from '../puzzle/const';
 import Laser from './Laser';
@@ -16,10 +16,11 @@ type CanvasProp = {
     height: number,
     puzzle_data: PuzzleData,
     setPuzzleData: React.Dispatch<React.SetStateAction<PuzzleData>>,
+    setSolved: React.Dispatch<React.SetStateAction<boolean>>,
     timer_enabled: boolean
 };
 
-const Canvas = ({ width, height, puzzle_data, setPuzzleData, timer_enabled }: CanvasProp) => {
+const Canvas = ({ width, height, puzzle_data, setPuzzleData, setSolved, timer_enabled }: CanvasProp) => {
     const [dragging_mino_index, setDraggingMinoIndex] = useState<number | undefined>(undefined);
 
     // ミノ数
@@ -46,6 +47,22 @@ const Canvas = ({ width, height, puzzle_data, setPuzzleData, timer_enabled }: Ca
             height: inventoryFrame.height
         })
     }
+    
+    useEffect(() => {
+        const non_activated_cells = [...puzzle_data[0]].map((y, y_index) => y
+            .map((e, x_index) => (
+                e !== "#" &&
+                e !== " " &&
+                puzzle_data[2][0].board[y_index][x_index] !== "￭" &&
+                puzzle_data[2][1].board[y_index][x_index] !== "￭"
+            ) ? "￭" : " ")
+        );
+        setSolved(
+            !non_activated_cells.flat().includes("￭") &&
+            puzzle_data[1].every(e => e.pos !== undefined) &&
+            dragging_mino_index === undefined
+        );
+    }, [puzzle_data])
 
     return (
         <Stage
@@ -94,8 +111,7 @@ const Canvas = ({ width, height, puzzle_data, setPuzzleData, timer_enabled }: Ca
                             setDraggingMinoIndex={setDraggingMinoIndex}
                         />
                     ))}
-                </Group>
-                <Group visible={timer_enabled}>
+                    
                     {inventorySlotFrames.map((slotFrame, i) => (
                         <InventoryMino
                             key={`il${i}`}

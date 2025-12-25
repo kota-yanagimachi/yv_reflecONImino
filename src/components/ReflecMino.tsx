@@ -176,21 +176,6 @@ const ReflecMino = (): JSX.Element => {
         }, [how2play_visible]
     );
 
-    useEffect(() => {
-        const non_activated_cells = [...puzzle_data[0]].map((y, y_index) => y
-            .map((e, x_index) => (
-                e !== "#" &&
-                e !== " " &&
-                puzzle_data[2][0].board[y_index][x_index] !== "￭" &&
-                puzzle_data[2][1].board[y_index][x_index] !== "￭"
-            ) ? "￭" : " ")
-        );
-        setSolved(
-            !non_activated_cells.flat().includes("￭") &&
-            puzzle_data[1].every(e => e.pos !== undefined)
-        );
-    }, [puzzle_data])
-
     return (
         <>
             <ThemeProvider theme={theme}>
@@ -410,6 +395,7 @@ const ReflecMino = (): JSX.Element => {
                                             height={size.y}
                                             puzzle_data={puzzle_data}
                                             setPuzzleData={setPuzzleData}
+                                            setSolved={setSolved}
                                             timer_enabled={timer_enabled}
                                         />
                                     </Box>
