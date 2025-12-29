@@ -44,10 +44,11 @@ const Timer = ({ enabled, theme, solved, playing }: TimerProp): JSX.Element => {
                 borderBottomWidth: "0",
                 "@media screen and (max-width:704px)": {
                     marginTop: theme.spacing(1)
-                }
+                },
+                fontSize: 40
             }}
         >
-            {m < 10 ? "0" : ""}{m}:{s < 10 ? "0" : ""}{s}
+            謹賀新年
         </Typography>
     );
 };

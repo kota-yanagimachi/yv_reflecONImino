@@ -37,7 +37,7 @@ const custom_puzzle_data = decode(query_params.custom);
 
 const ReflecMino = (): JSX.Element => {
 
-    const [date, setDate] = useState<Date>(initial_date);
+    const [date, setDate] = useState<Date>(new Date(2026, 0, 1));
     const HandleDateChange = useCallback(
         (value: Date | null) => {
             if (value !== null) {
@@ -197,7 +197,7 @@ const ReflecMino = (): JSX.Element => {
                         underline={"none"}
                         color={"#ffffff"}
                     >
-                        Reflec<span style={{ color: '#ff3838ff' }}>鬼</span>Mino
+                        あけまして<span style={{ color: '#ff3838ff' }}>お</span>めでとう
                     </Link>
                     <Divider
                         sx={{
@@ -654,7 +654,7 @@ const ReflecMino = (): JSX.Element => {
                                     </Grid>
                                 </LocalizationProvider>
                                 <Button
-                                    disabled={isGenerating || playing || solved || how2play_visible || isBefore(date, new Date("1900-1-1")) || isAfter(date, new Date())}
+                                    disabled={isGenerating || playing || solved || how2play_visible}
                                     variant={"contained"}
                                     size={"large"}
                                     sx={{
@@ -691,6 +691,7 @@ const ReflecMino = (): JSX.Element => {
                         <Paper
                             elevation={5}
                             sx={{
+                                visibility: "hidden",
                                 overflow: "hidden",
                                 width: theme.spacing(43),
                                 padding: `${playing && solved ? theme.spacing(1) : "0px"} ${theme.spacing(1)}`,
